@@ -37,6 +37,12 @@ var spinResult;
 var fruits = "";
 var winRatio = 0;
 
+var soundID = "CashOut";
+var buttonClick = "click";
+var error = "Error";
+var buttonHover = "Hover";
+
+
 /* Tally Variables */
 var grapes = 0;
 var bananas = 0;
@@ -47,17 +53,22 @@ var bells = 0;
 var sevens = 0;
 var blanks = 0;
 
+createjs.Sound.registerSound("assets/audio/cashout.mp3", soundID);
+createjs.Sound.registerSound("assets/audio/buttonClick.mp3", buttonClick);
+createjs.Sound.registerSound("assets/audio/error.wav", error);
+createjs.Sound.registerSound("assets/audio/hover.ogg", buttonHover);
+
+
 // FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function init() {
-
+    
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas); // Parent Object
     stage.enableMouseOver(20); // Turn on Mouse Over events
 
     createjs.Ticker.setFPS(60); // Set the frame rate to 60 fps
     createjs.Ticker.addEventListener("tick", gameLoop);
-
     main();
 }
 
@@ -92,35 +103,42 @@ function betTenButtonOut() {
     betTenButton.alpha = 1; // 100% Alpha 
 }
 
-function resetButtonOver() {
-    resetButton.alpha = 0.7;
-
-}
-
 // hovering over the buttons
 
 function spinButtonOver() {
+    createjs.Sound.play(buttonHover);
     spinButton.alpha = 0.7;
 }
 
 function powerButtonOver() {
+    createjs.Sound.play(buttonHover);
     powerButton.alpha = 0.7;
 }
 
 function betOneButtonOver() {
+    createjs.Sound.play(buttonHover);
     betOneButton.alpha = 0.7;
 }
 
 function betMaxButtonOver() {
+    createjs.Sound.play(buttonHover);
     betMaxButton.alpha = 0.7;
 }
 
 function betTenButtonOver() {
+    createjs.Sound.play(buttonHover);
     betTenButton.alpha = 0.7;
 }
 
+function resetButtonOver() {
+    createjs.Sound.play(buttonHover);
+    resetButton.alpha = 0.7;
+}
+
+
 // START THE GAME
- function main() {
+function main() {
+   
         game = new createjs.Container(); // Instantiates the Game Container
         game.x = 23;
         game.y = 6;
@@ -236,44 +254,55 @@ function createUI() {
 
 function spinReels() {
 
-    if (playerMoney == 0) {
-        if (confirm("You ran out of Money! \nDo you want to play again?")) {
-            resetAll();
+    createjs.Sound.play(buttonClick);
+    if (playerBet != 0) {
+        if (playerMoney == 0) {
+            createjs.Sound.play(error);
+            if (confirm("You ran out of Money! \nDo you want to play again?")) {
+                resetAll();
+                showPlayerStats();
+            }
+        }
+        else if (playerBet > playerMoney) {
+            createjs.Sound.play(error);
+            alert("You don't have enough Money to place that bet.");
+        }
+
+        else if (playerBet <= playerMoney) {
+
+            // Add Spin Reels code here
+            spinResult = Reels();
+            fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
+            console.log(fruits);
+
+            for (var tile = 0; tile < 3; tile++) {
+
+                tileContainers[tile].removeAllChildren();
+                tiles[tile] = new createjs.Bitmap("assets/images/" + spinResult[tile] + ".png");
+                tiles[tile].x = 110 + (113 * tile);
+                tiles[tile].y = 239;
+                tileContainers[tile].addChild(tiles[tile]);
+            }
+            determineWinnings();
             showPlayerStats();
         }
     }
-    else if (playerBet > playerMoney) {
-        alert("You don't have enough Money to place that bet.");
-    }
-
-    else if (playerBet <= playerMoney) {
-
-        // Add Spin Reels code here
-        spinResult = Reels();
-        fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
-        console.log(fruits);
-
-        for (var tile = 0; tile < 3; tile++) {
-
-            tileContainers[tile].removeAllChildren();
-            tiles[tile] = new createjs.Bitmap("assets/images/" + spinResult[tile] + ".png");
-            tiles[tile].x = 110 + (113 * tile);
-            tiles[tile].y = 239;
-            tileContainers[tile].addChild(tiles[tile]);
-        }
-        determineWinnings();
-        showPlayerStats();
+    else {
+        createjs.Sound.play(error);
+        alert("Please enter a bet amount first");
     }
 }
 
 // this method displays the bet amount of $1 when user clicks the betMin button
 function betOne() {
+    createjs.Sound.play(buttonClick);
     playerBet = 1;
     betText.text = playerBet.toString();
 } //function bet1 ends 
 
 // this method displays the bet amount of $100 when user clicks the betMax button
 function betMax() {
+    createjs.Sound.play(buttonClick);
     playerBet = 100;
     betText.text = playerBet.toString();
 
@@ -281,12 +310,14 @@ function betMax() {
 
 // this method displays the bet amount of $10 when user clicks the bet10 button
 function betTen() {
+    createjs.Sound.play(buttonClick);
     playerBet = 10;
     betText.text = playerBet.toString();
 
 } //function bet1 ends 
 
 function closeWindow() {
+    createjs.Sound.play(buttonClick);
     var x = confirm('Are You sure want to exit:');
     if (x) window.close();
 }
@@ -307,6 +338,8 @@ function checkJackPot() {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;
         jackpot = 1000;
+        jackpotText.text = jackpot.toString();
+        
     }
 }
 
@@ -316,6 +349,7 @@ function showWinMessage() {
     winningsText.text = winnings.toString();
     resetFruitTally();
     checkJackPot();
+    createjs.Sound.play(soundID);
 }
 
 /* Utility function to show a loss message and reduce player money */
@@ -351,6 +385,7 @@ function resetFruitTally() {
 
 /* Utility function to reset the player stats */
 function resetAll() {
+    createjs.Sound.play(buttonClick);
     for (var i = 0; i < 3; i++) {
         tileContainers[i].removeAllChildren();
     }

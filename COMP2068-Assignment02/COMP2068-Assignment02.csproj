@@ -59,6 +59,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\audio\hover.ogg" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -67,6 +68,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\audio\buttonClick.mp3" />
+    <Content Include="assets\audio\cashout.mp3" />
+    <Content Include="assets\audio\error.wav" />
     <Content Include="assets\images\background.png" />
     <Content Include="assets\images\banana.png" />
     <Content Include="assets\images\bar.png" />
@@ -103,7 +107,6 @@
     <TypeScriptCompile Include="Scripts\lib\tweenjs.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="assets\audio\" />
     <Folder Include="assets\fonts\" />
   </ItemGroup>
   <PropertyGroup>
