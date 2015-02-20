@@ -68,7 +68,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\images\background.png" />
-    <Content Include="assets\images\blueButton.png" />
+    <Content Include="assets\images\banana.png" />
+    <Content Include="assets\images\bar.png" />
+    <Content Include="assets\images\bell.png" />
+    <Content Include="assets\images\Bet10.png" />
+    <Content Include="assets\images\betMaxButton1.png" />
+    <Content Include="assets\images\betMinButton1.png" />
+    <Content Include="assets\images\blank.png" />
+    <Content Include="assets\images\cherry.png" />
+    <Content Include="assets\images\exitbutton.png" />
+    <Content Include="assets\images\grapes.png" />
+    <Content Include="assets\images\orange.png" />
+    <Content Include="assets\images\reset.png" />
+    <Content Include="assets\images\seven.png" />
+    <Content Include="assets\images\spin.png" />
     <Content Include="css\game.css" />
     <Content Include="index.html" />
     <Content Include="Scripts\lib\easeljs-0.8.0.min.js" />
