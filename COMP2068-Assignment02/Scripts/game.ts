@@ -1,16 +1,45 @@
 ﻿﻿/**
-Name - Karan Sharma
-Date- February 19, 2015
-Description - this class runs the functionality of slot machine
+* Name - Karan Sharma
+* Last Modified Date- February 19, 2015
+* Description - this class runs the functionality of slot machine. In this player
+* has to select how much they want to bet. Once player select the bet amount and 
+* click the spin button then it shows the result of that spin by showing the images 
+* in the reels and displaying the win or loss amount. There is a reset button which 
+* reset the slot mchine to the default stage and a close button ends the game by
+* closing the tab.
+* 
+* Revisiion History:
+* 
+* Version #1.0 – February 18, 2015
+* Feature: Start working on the game designing and initialise with the given template.
+* 
+* Version #1.1 – February 19, 2015
+* Feature: Added the background image to the project.
+* 
+* Version #1.2 – February 19, 2015
+* Feature: Updated image folder by adding all the other images that requires for the slot machine.
+*
+*  Version #1.3 – February 19, 2015
+* Feature: Updated game file by adding event listeners. 
+* 
+* Version #1.4 – February 20, 2015
+* Feature: Added all the other functions in the game which displays the images and text in the slot machine.
+* 
+* Version #1.5 – February 20, 2015
+* Feature: Added sound effects to the slot machine. 
+* 
+* 
+*  
 */
 
-// GAME OBJECTS
+// Stage Objects
 var canvas; // Reference to the HTML 5 Canvas element
 var stage: createjs.Stage; // Reference to the Stage
+
+// GAME OBJECTS
 var game: createjs.Container; // Main Game Container Object
 var tiles: createjs.Bitmap[] = [];
 var tileContainers: createjs.Container[] = [];
-
 var background: createjs.Bitmap;
 var spinButton: createjs.Bitmap;
 var spinButton_hover: createjs.Bitmap;
@@ -19,11 +48,15 @@ var betOneButton: createjs.Bitmap;
 var betTenButton: createjs.Bitmap;
 var resetButton: createjs.Bitmap;
 var powerButton: createjs.Bitmap;
-
 var jackpotText: createjs.Text;
 var winningsText: createjs.Text;
 var betText: createjs.Text;
 var playerCreditsText: createjs.Text;
+
+createjs.Sound.registerSound("assets/audio/cashout.mp3", soundID);
+createjs.Sound.registerSound("assets/audio/buttonClick.mp3", buttonClick);
+createjs.Sound.registerSound("assets/audio/error.wav", error);
+createjs.Sound.registerSound("assets/audio/hover.ogg", buttonHover);
 
 // Game Variables
 var playerMoney = 1000;
@@ -36,7 +69,6 @@ var lossNumber = 0;
 var spinResult;
 var fruits = "";
 var winRatio = 0;
-
 var soundID = "CashOut";
 var buttonClick = "click";
 var error = "Error";
@@ -53,14 +85,10 @@ var bells = 0;
 var sevens = 0;
 var blanks = 0;
 
-createjs.Sound.registerSound("assets/audio/cashout.mp3", soundID);
-createjs.Sound.registerSound("assets/audio/buttonClick.mp3", buttonClick);
-createjs.Sound.registerSound("assets/audio/error.wav", error);
-createjs.Sound.registerSound("assets/audio/hover.ogg", buttonHover);
-
-
 // FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+/*
+ * This function initiates the game by setting the stage and call the main() method
+ */
 function init() {
     
     canvas = document.getElementById("canvas");
@@ -70,8 +98,7 @@ function init() {
     createjs.Ticker.setFPS(60); // Set the frame rate to 60 fps
     createjs.Ticker.addEventListener("tick", gameLoop);
     main();
-}
-
+}//function init ends
 
 // GAMELOOP
 function gameLoop() {
@@ -104,7 +131,6 @@ function betTenButtonOut() {
 }
 
 // hovering over the buttons
-
 function spinButtonOver() {
     createjs.Sound.play(buttonHover);
     spinButton.alpha = 0.7;
@@ -136,7 +162,9 @@ function resetButtonOver() {
 }
 
 
-// START THE GAME
+/*
+ * This function iniatiates the game container and call th createUI() method 
+ */
 function main() {
    
         game = new createjs.Container(); // Instantiates the Game Container
@@ -150,9 +178,11 @@ function main() {
             tileContainers[i] = new createjs.Container();
             game.addChild(tileContainers[i]);
         }  
-     }
+     } // main function ends 
 
-
+/**
+ * This function set the layout of the images and text objects in their respective positions
+ */
 function createUI() {
 
     // Add the background to the game container
@@ -250,12 +280,16 @@ function createUI() {
     jackpotText.x = 235;
     jackpotText.y = 133;
     game.addChild(jackpotText);
-}
+} // function createUI ends
 
+/*
+ * This function spins the slot machine
+ */
 function spinReels() {
-
-    createjs.Sound.play(buttonClick);
+    createjs.Sound.play(buttonClick); // calls buttonClick soun here
+    // This if statement checks that if playerBet is not equal to 0 then check other conditions
     if (playerBet != 0) {
+    // it shows the message to the user to play again when user ran out of money
         if (playerMoney == 0) {
             createjs.Sound.play(error);
             if (confirm("You ran out of Money! \nDo you want to play again?")) {
@@ -263,28 +297,27 @@ function spinReels() {
                 showPlayerStats();
             }
         }
+        // if player bet is greater than player credits then show the error message
         else if (playerBet > playerMoney) {
             createjs.Sound.play(error);
             alert("You don't have enough Money to place that bet.");
         }
-
+     // if player bet is less than player money then game starts 
         else if (playerBet <= playerMoney) {
-
             // Add Spin Reels code here
             spinResult = Reels();
             fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
             console.log(fruits);
-
+        // get the images of what was spin
             for (var tile = 0; tile < 3; tile++) {
-
-                tileContainers[tile].removeAllChildren();
+                tileContainers[tile].removeAllChildren(); // clear the tile containers
                 tiles[tile] = new createjs.Bitmap("assets/images/" + spinResult[tile] + ".png");
                 tiles[tile].x = 110 + (113 * tile);
                 tiles[tile].y = 239;
                 tileContainers[tile].addChild(tiles[tile]);
-            }
-            determineWinnings();
-            showPlayerStats();
+            } // for ends
+            determineWinnings(); // check if player lost or won
+            showPlayerStats();   // dispaly the result of the spin
         }
     }
     else {
@@ -308,7 +341,9 @@ function betMax() {
 
 } //function bet100 ends 
 
-// this method displays the bet amount of $10 when user clicks the bet10 button
+/*
+ * this function displays the bet amount of $10 when user clicks the bet10 button
+ */
 function betTen() {
     createjs.Sound.play(buttonClick);
     playerBet = 10;
@@ -316,8 +351,12 @@ function betTen() {
 
 } //function bet1 ends 
 
+/*
+ * This function ends the by closing it
+ */
 function closeWindow() {
     createjs.Sound.play(buttonClick);
+    createjs.Sound.play(error);
     var x = confirm('Are You sure want to exit:');
     if (x) window.close();
 }
