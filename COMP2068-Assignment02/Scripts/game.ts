@@ -14,22 +14,44 @@
 * Feature: Start working on the game designing and initialise with the given template.
 * 
 * Version #1.1 – February 19, 2015
-* Feature: Added the background image to the project.
-* 
+* Feature: Created and added the background image of the project which is the image of slot machine.
+*	       Get the coordinates of all the elements to be placed in slot machine.  
+*
 * Version #1.2 – February 19, 2015
 * Feature: Updated image folder by adding all the other images that requires for the slot machine.
 *
 *  Version #1.3 – February 19, 2015
-* Feature: Updated game file by adding event listeners. 
+* Feature:
+* Updated game file by adding event listeners. 
+* Added button to the canvas and set the background of slot machine according to them.
+* Added hover effects of the buttons.
 * 
 * Version #1.4 – February 20, 2015
-* Feature: Added all the other functions in the game which displays the images and text in the slot machine.
+* Feature: 
+* Added all the other functions in the game which displays the images in the slot machine reels.
+* Added the text labels to the background image.
+* Displays the text in the labels of player outputs.
 * 
 * Version #1.5 – February 20, 2015
-* Feature: Added sound effects to the slot machine. 
+* Feature: 
+* Added sound effects to the slot machine for every buttons and spin and winning.
+* Did some changes in the CSS file.
 * 
+* Version #1.6 – February 20, 2015
+* Feature: 
+* Added exit button functionality and made it working. 
+* When the player click the exit button and it will asks for the game to exit and close the tab.
+* Almost finish the internal documentation. 
 * 
-*  
+* Version #1.7 – February 20, 2015
+* Feature: 
+* Added jackpot win sound effect to the slot machine.
+* Did some changes in the CSS file.
+* 
+* Version #1.8 – February 20, 2015
+* Feature: 
+* Updated the background image with the text labels.
+* finish the project with the complete in internal documentation.
 */
 
 // Stage Objects
@@ -375,8 +397,8 @@ function showPlayerStats() {
 function checkJackPot() {
     createjs.Sound.play(jackpotSound);
     /* compare two random values */
-    var jackPotTry = Math.floor(Math.random() * 1 + 1);
-    var jackPotWin = Math.floor(Math.random() * 1 + 1);
+    var jackPotTry = Math.floor(Math.random() * 51 + 1);
+    var jackPotWin = Math.floor(Math.random() * 51 + 1);
     if (jackPotTry == jackPotWin) {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;
