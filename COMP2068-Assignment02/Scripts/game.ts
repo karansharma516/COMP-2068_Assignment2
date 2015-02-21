@@ -53,10 +53,7 @@ var winningsText: createjs.Text;
 var betText: createjs.Text;
 var playerCreditsText: createjs.Text;
 
-createjs.Sound.registerSound("assets/audio/cashout.mp3", soundID);
-createjs.Sound.registerSound("assets/audio/buttonClick.mp3", buttonClick);
-createjs.Sound.registerSound("assets/audio/error.wav", error);
-createjs.Sound.registerSound("assets/audio/hover.ogg", buttonHover);
+
 
 // Game Variables
 var playerMoney = 1000;
@@ -73,7 +70,13 @@ var soundID = "CashOut";
 var buttonClick = "click";
 var error = "Error";
 var buttonHover = "Hover";
+var jackpotSound = "jackPot";
 
+createjs.Sound.registerSound("assets/audio/cashout.mp3", soundID);
+createjs.Sound.registerSound("assets/audio/buttonClick.mp3", buttonClick);
+createjs.Sound.registerSound("assets/audio/error.wav", error);
+createjs.Sound.registerSound("assets/audio/hover.ogg", buttonHover);
+createjs.Sound.registerSound("assets/audio/jackpot.mp3", jackpotSound);
 
 /* Tally Variables */
 var grapes = 0;
@@ -173,7 +176,7 @@ function main() {
 
         createUI();
         stage.addChild(game); // Adds the Game Container to the Stage
-
+    
         for (var i = 0; i < 3; i++) {
             tileContainers[i] = new createjs.Container();
             game.addChild(tileContainers[i]);
@@ -370,9 +373,10 @@ function showPlayerStats() {
 
 /* Check to see if the player won the jackpot */
 function checkJackPot() {
+    createjs.Sound.play(jackpotSound);
     /* compare two random values */
-    var jackPotTry = Math.floor(Math.random() * 51 + 1);
-    var jackPotWin = Math.floor(Math.random() * 51 + 1);
+    var jackPotTry = Math.floor(Math.random() * 1 + 1);
+    var jackPotWin = Math.floor(Math.random() * 1 + 1);
     if (jackPotTry == jackPotWin) {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;

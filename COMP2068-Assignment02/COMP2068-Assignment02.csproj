@@ -71,6 +71,7 @@
     <Content Include="assets\audio\buttonClick.mp3" />
     <Content Include="assets\audio\cashout.mp3" />
     <Content Include="assets\audio\error.wav" />
+    <Content Include="assets\audio\jackpot.mp3" />
     <Content Include="assets\images\background.png" />
     <Content Include="assets\images\banana.png" />
     <Content Include="assets\images\bar.png" />
